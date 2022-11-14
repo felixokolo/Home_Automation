@@ -5,6 +5,8 @@ Base model for nodes
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import declarative_base
 
+Base = declarative_base()
+
 class BaseModel(Base):
     """
     Base class for nodes.
@@ -18,5 +20,11 @@ class BaseModel(Base):
         Date and time object was created
     updated_at : Datetime
         Date and time object was updated
-    
+
     """
+
+    def __init__(self):
+        """
+        Init method for BaseModel class
+        Args:
+        """
