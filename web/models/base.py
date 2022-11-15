@@ -4,6 +4,7 @@ Base model for nodes
 """
 from sqlalchemy.orm import declarative_base
 from datetime import datetime
+from sqlalchemy import Column, Integer, String, DateTime
 
 
 Base = declarative_base()
@@ -25,6 +26,9 @@ class BaseModel():
     """
     __instances = []  # stores all instances created
     __instanceNumber = 0  # counts the number of instances created
+    id = Column(String(50), primary_key=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow)
 
     def __init__(self, id, *args, **kwargs):
         """
@@ -56,8 +60,8 @@ class BaseModel():
                     else:
                         self.__dict__[k] = kwargs[k]
         else:
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
+            self.created_at = datetime.utcnow()
+            self.updated_at = self.created_at
 
     def to_dict(self):
         """
