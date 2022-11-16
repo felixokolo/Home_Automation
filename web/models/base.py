@@ -27,6 +27,7 @@ class BaseModel():
     __instances = []  # stores all instances created
     __instanceNumber = 0  # counts the number of instances created
     id = Column(String(50), primary_key=True)
+    name = Column(String(50), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
 

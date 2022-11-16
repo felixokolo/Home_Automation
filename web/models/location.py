@@ -4,12 +4,12 @@ Model for Node locations
 """
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import declarative_base, relationship
-import web.models.base as base
+from web.models.base import Base
 from web.models.base import BaseModel
-from web.models.engine.dbStorage import Storage
+from web.models import storage
 from uuid import uuid4
 
-class Location(BaseModel, base.Base):
+class Location(BaseModel, Base):
     """
     Location class for nodes
 
@@ -34,8 +34,6 @@ class Location(BaseModel, base.Base):
             Node ID
         """
 
-        id = str(uuid4())
-        super().__init__(id, name *args, **kwargs)
-        base.Base.metadata.create_all(Storage.engine)
-        Storage.session.add(self)
-        Storage.session.commit()
+        ids = str(uuid4())
+        super().__init__(ids, name, *args, **kwargs)
+        storage.new(self)

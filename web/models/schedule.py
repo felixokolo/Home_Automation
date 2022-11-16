@@ -3,19 +3,15 @@
 Model of schedules
 """
 
-from models.base import Base
-from models.base import BaseModel
+from web.models.base import Base
+from web.models.base import BaseModel
 from sqlalchemy import Column, Integer, String, Float, Table, ForeignKey, DateTime
 from sqlalchemy.orm import declarative_base, relationship
 import web.models.base as base
 from web.models.base import BaseModel
-from web.models.engine.dbStorage import Storage
+from web.models import storage
 from uuid import uuid4
-
-node_schedules =Table(  "node_schedules",
-                        Base.metadata,
-                        Column("light_id", ForeignKey("lights.id"), primary_key=True),
-                        Column("schedule_id", ForeignKey("schedules.id"), primary_key=True),)
+from datetime import datetime
 
 class Schedule(BaseModel, Base):
     """
@@ -37,13 +33,18 @@ class Schedule(BaseModel, Base):
 
 
 
-    action_time = Column(String, nullable=False)
-    action = Column(String, nullable=False)
-    action_node = relationship("Light", secondary=node_schedules)
-    id = str(uuid4())
+    action_time = Column(String(50), nullable=False)
+    action = Column(String(50), nullable=False)
+    # lights = relationship( "Light",
+    #                             secondary=node_schedules,
+    #                             back_populates="schedules")
+    ids = str(uuid4())
 
-    def __init__(self, name, *args, **kwargs):
+    def __init__(self, name, a_time, action, *args, **kwargs):
         """
         Init for schedules
         """
-        super(id, name, *args, **kwargs)
+        super().__init__(self.ids, name, *args, **kwargs)
+        self.action_time = datetime.strptime(a_time, "%Y/%m/%d %H:%M:%S:%f")
+        self.action = action
+        storage.new(self)
