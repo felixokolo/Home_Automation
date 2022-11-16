@@ -30,7 +30,7 @@ class BaseModel():
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow)
 
-    def __init__(self, id, *args, **kwargs):
+    def __init__(self, id, name, *args, **kwargs):
         """
         Init method for BaseModel class
         Args:
@@ -44,7 +44,11 @@ class BaseModel():
         if id in BaseModel.__instances:  # id must be unique
             raise Exception("id already exists")
 
+        if type(name) is not str:
+            raise Exception("Name must be a string")
+
         self.id = id
+        self.name = name
         BaseModel.__instances.append(self.id)
         BaseModel.__instanceNumber += 1
 
