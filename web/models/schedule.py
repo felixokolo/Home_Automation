@@ -9,9 +9,9 @@ from sqlalchemy import Column, Integer, String, Float, Table, ForeignKey, DateTi
 from sqlalchemy.orm import declarative_base, relationship
 import web.models.base as base
 from web.models.base import BaseModel
-#from web.models import storage
 from uuid import uuid4
 from datetime import datetime
+import web.models as models
 
 class Schedule(BaseModel, Base):
     """
@@ -56,4 +56,4 @@ class Schedule(BaseModel, Base):
         super().__init__(self.ids, name, *args, **kwargs)
         self.action_time = datetime.strptime(a_time, "%Y/%m/%d %H:%M")
         self.action = action
-        storage.new(self)
+        models.storage.new(self)

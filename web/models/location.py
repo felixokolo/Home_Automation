@@ -6,8 +6,10 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import declarative_base, relationship
 from web.models.base import Base
 from web.models.base import BaseModel
-from web.models.lightNodes import Light
-from web.models import storage
+from web.models.node import Node
+
+
+import web.models as models
 from uuid import uuid4
 
 class Location(BaseModel, Base):
@@ -25,16 +27,16 @@ class Location(BaseModel, Base):
     """
 
     __tablename__ = 'locations'
-    light_nodes = relationship("Light")
+    light_nodes = relationship("Node")
 
     def __init__(self, name, *args, **kwargs):
         """
         Init method for Location class
         Args:
-        name  : Integer
-            Node ID
+        name  : string
+            Location name
         """
 
         ids = str(uuid4())
         super().__init__(ids, name, *args, **kwargs)
-        storage.new(self)
+        models.storage.new(self)
