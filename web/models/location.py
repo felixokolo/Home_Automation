@@ -6,6 +6,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import declarative_base, relationship
 from web.models.base import Base
 from web.models.base import BaseModel
+from web.models.lightNodes import Light
 from web.models import storage
 from uuid import uuid4
 

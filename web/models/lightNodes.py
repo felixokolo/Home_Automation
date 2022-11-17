@@ -9,8 +9,9 @@ from sqlalchemy import Column, Integer, String, Float, Table, ForeignKey
 from sqlalchemy.orm import declarative_base, relationship
 import web.models.base as base
 from web.models.base import BaseModel
-from web.models import storage
-from web.models.location import Location
+#from web.models import storage
+from web.models.schedule import Schedule
+#from web.models.location import Location
 
 node_schedules =Table(  "node_schedules",
                         Base.metadata,
@@ -50,3 +51,9 @@ class Light(BaseModel, Base):
         self.brightnes = brightnes
 
         storage.new(self)
+
+    def get_schedules(self):
+        """
+        Get schedules associated with a light nodes
+        """
+        return self.schedules

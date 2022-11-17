@@ -5,6 +5,7 @@ Storage engine module
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from web.models.lightNodes import Light
 from web.models.base import Base
 
 
@@ -15,7 +16,7 @@ class Storage:
 
 	__engine = create_engine("mysql+mysqldb://alx:password@localhost/home_automation",
                             encoding='latin1', echo=True)
-	
+
 	__Session = sessionmaker(bind=__engine)
 	__session = __Session()
 
@@ -43,3 +44,18 @@ class Storage:
 		"""
 		Base.metadata.create_all(self.__engine)
 		self.__session.commit()
+
+	def get(self, cls, id):
+		"""
+		Get object of specified class and id
+
+		Args:
+		cls : String
+			Name of class
+		id : string
+			ID of object
+		"""
+		ret = self.__session.query(eval(cls)).filter(eval(cls).id == id).all()
+		if len(ret) != 0:
+			return ret[0]
+		return None

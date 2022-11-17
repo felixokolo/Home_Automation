@@ -9,7 +9,7 @@ from sqlalchemy import Column, Integer, String, Float, Table, ForeignKey, DateTi
 from sqlalchemy.orm import declarative_base, relationship
 import web.models.base as base
 from web.models.base import BaseModel
-from web.models import storage
+#from web.models import storage
 from uuid import uuid4
 from datetime import datetime
 
@@ -43,8 +43,17 @@ class Schedule(BaseModel, Base):
     def __init__(self, name, a_time, action, *args, **kwargs):
         """
         Init for schedules
+
+        Args:
+        name : string
+            Name of schedule
+        a_time : string
+            Time to execute action stated as string of format
+            %Y/%m/%d %H:%M
+        action : string
+            Name of action
         """
         super().__init__(self.ids, name, *args, **kwargs)
-        self.action_time = datetime.strptime(a_time, "%Y/%m/%d %H:%M:%S:%f")
+        self.action_time = datetime.strptime(a_time, "%Y/%m/%d %H:%M")
         self.action = action
         storage.new(self)
