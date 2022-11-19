@@ -1,4 +1,47 @@
 body {
   background: #000;
   color: #fff;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+section {
+  height: 15vh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #060;
+}
+
+.row {
+  content: "";
+  display: block;
+  height: 85vh;
+  box-sizing: border-box;
+  background: #560;
+}
+
+.col{
+  float: left;
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  height: inherit;
+}
+
+.signin{
+  background: #999;
+  width: 20vw;
+}
+
+.intro{
+  background: #900;
+  width: 80vw;
+}
+
+.row{
+  content: "";
+  display: table;
+  clear: both;
 }
