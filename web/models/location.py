@@ -2,11 +2,12 @@
 """
 Model for Node locations
 """
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import declarative_base, relationship
 from web.models.base import Base
 from web.models.base import BaseModel
 from web.models.node import Node
+#from web.models.user import User
 
 
 import web.models as models
@@ -27,9 +28,10 @@ class Location(BaseModel, Base):
     """
 
     __tablename__ = 'locations'
+    user_id = Column(String(50), ForeignKey("users.id"))
     light_nodes = relationship("Node")
 
-    def __init__(self, name, *args, **kwargs):
+    def __init__(self, name, user_id, *args, **kwargs):
         """
         Init method for Location class
         Args:
@@ -39,4 +41,5 @@ class Location(BaseModel, Base):
 
         ids = str(uuid4())
         super().__init__(ids, name, *args, **kwargs)
+        self.user_id = user_id
         models.storage.new(self)
