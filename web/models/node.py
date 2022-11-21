@@ -87,16 +87,16 @@ class Node(BaseModel, Base):
         self.channels.append(obj)
 
     @classmethod
-    def get_user_nodes(cls, user_id):
+    def get_loc_nodes(cls, loc_id):
         """
-        Get all nodes associted to a User id
+        Get all nodes associted to a Location id
 
         Args:
-            user_id : String
-                user id to search
+            loc_id : String
+                location id to search
         """
 
         nodes = models.storage.get_class(cls.__name__);
         if nodes is None:
             return None
-        return [node for node in nodes if node.user_id == user_id]
+        return [node for node in nodes if node.location_id == loc_id]

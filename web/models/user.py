@@ -10,6 +10,7 @@ from sqlalchemy.orm import declarative_base, relationship
 from uuid import uuid4
 import web.models as models
 from web.models.location import Location
+from web.models.node import Node
 
 class User(BaseModel, Base):
     """
@@ -44,9 +45,9 @@ class User(BaseModel, Base):
         models.storage.new(self)
 
     @classmethod
-    def get_user_nodes(cls, uname):
+    def get_locs(cls, uname):
         """
-        Get all nodes associted to a Username
+        Get all locations associted to a user
 
         Args:
             uname : String
@@ -54,10 +55,11 @@ class User(BaseModel, Base):
         """
 
         users = models.storage.get_class(cls.__name__);
+        locs = models.storage.get_class("Location");
+        ret = []
         if users is None:
             return None
         for user in users:
-            print(user.name)
             if user.name == uname:
-                nodes = Node.get_user_nodes(user.id)
-                return nodes
+                ret = [loc for loc in locs if loc.user_id == user.id]
+                return ret

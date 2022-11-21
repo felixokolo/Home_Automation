@@ -43,3 +43,21 @@ class Location(BaseModel, Base):
         super().__init__(ids, name, *args, **kwargs)
         self.user_id = user_id
         models.storage.new(self)
+
+    @classmethod
+    def get_nodes(cls, loc_id):
+        """
+        Get all nodes associted to a Location
+
+        Args:
+            loc_id : String
+                Location id to search
+        """
+
+        locs = models.storage.get_class(cls.__name__);
+        if locs is None:
+            return None
+        for loc in locs:
+            if loc.id == loc_id:
+                nodes = Node.get_loc_nodes(loc.id)
+                return nodes
