@@ -55,6 +55,8 @@ class Node(BaseModel, Base):
             Node name eg. Room Node
         location_id : string
         	Associated location ID
+        user_id : string
+        	Associated user ID
     	state : string
         	Node state
         	possible values = ['ON', 'OFF']
@@ -83,3 +85,18 @@ class Node(BaseModel, Base):
             Channel to associate with node
         """
         self.channels.append(obj)
+
+    @classmethod
+    def get_loc_nodes(cls, loc_id):
+        """
+        Get all nodes associted to a Location id
+
+        Args:
+            loc_id : String
+                location id to search
+        """
+
+        nodes = models.storage.get_class(cls.__name__);
+        if nodes is None:
+            return None
+        return [node for node in nodes if node.location_id == loc_id]

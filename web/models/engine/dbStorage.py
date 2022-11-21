@@ -5,10 +5,11 @@ Storage engine module
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-# from web.models.channel import Channel
-# from web.models.node import Node
-# from web.models.location import Location
-# from web.models.schedule import Schedule
+from web.models.channel import Channel
+from web.models.node import Node
+from web.models.location import Location
+from web.models.schedule import Schedule
+from web.models.user import User
 from web.models.base import Base
 
 
@@ -22,6 +23,7 @@ class Storage:
 
 	__Session = sessionmaker(bind=__engine)
 	__session = __Session()
+	__classes = ['Node', 'Schedule', 'Location', 'User', 'Channel']
 
 	def __init__(self):
 		"""
@@ -62,3 +64,28 @@ class Storage:
 		if len(ret) != 0:
 			return ret[0]
 		return None
+
+	def get_class(self, cls):
+		"""
+		Get object of specified class
+
+		Args:
+		cls : String
+			Name of class
+		"""
+		ret = self.__session.query(eval(cls)).all()
+		if len(ret) != 0:
+			return ret
+		return None
+
+	def delete_all(self):
+		"""
+		Get object of specified class
+
+		Args:
+		cls : String
+			Name of class
+		"""
+		for cls in self.__classes:
+			self.__session.query(eval(cls)).delete()
+		self.__session.commit()

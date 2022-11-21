@@ -5,6 +5,7 @@ Base model for nodes
 from sqlalchemy.orm import declarative_base
 from datetime import datetime
 from sqlalchemy import Column, Integer, String, DateTime
+import web.models as models
 
 
 Base = declarative_base()
@@ -43,7 +44,7 @@ class BaseModel():
             raise Exception("id must be a string")
 
         if id in BaseModel.__instances:  # id must be unique
-            raise Exception("id already exists")
+            raise Exception("id {} already exists".format(id))
 
         if type(name) is not str:
             raise Exception("Name must be a string")
@@ -82,4 +83,17 @@ class BaseModel():
         to_return['created_at'] = self.created_at.strftime("%d/%m/%Y %H:%M:%S:%f")
         to_return['updated_at'] = self.updated_at.strftime("%d/%m/%Y %H:%M:%S:%f")
         to_return['class'] = self.__class__.__name__
+        if to_return.get('_sa_instance_state') is not None:
+            del to_return['_sa_instance_state']
         return to_return
+
+    def save(self):
+        """
+        Save changes to instance
+        """
+        self.updated_at = datetime.utcnow()
+        models.storage.save()
+
+    @classmethod
+    def show_instances(cls):
+        print(cls.__instances)
