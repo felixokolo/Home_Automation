@@ -27,12 +27,10 @@ class User(BaseModel, Base):
     """
 
     __tablename__ = "users"
-
-
-
+    username = Column(String(50), primary_key=True, unique=True)
     nodes = relationship("Location")
 
-    def __init__(self, uname, *args, **kwargs):
+    def __init__(self, uname, name, *args, **kwargs):
         """
         Init for users
 
@@ -41,7 +39,15 @@ class User(BaseModel, Base):
             Username of user
         """
         __ids = str(uuid4())
-        super().__init__(__ids, uname, *args, **kwargs)
+
+        if (models.storage.psession.
+            query(self.__class__.username).
+            filter_by(username=uname).first() is not None):
+            print("username exists")
+            raise Exception("Username already exists")
+
+        super().__init__(__ids, name, *args, **kwargs)
+        self.username = uname
         models.storage.new(self)
 
     @classmethod

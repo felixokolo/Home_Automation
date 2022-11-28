@@ -14,7 +14,17 @@ def hello_world():
 
 @app_views.route("/<uname>", methods=['GET', 'POST'])
 def get_user_nodes(uname):
+    """
+    Function to get user associated details or create a user
+
+    Args:
+        uname : String
+            Username to fetch details
+    """
+
+
     if request.method == 'GET':
+        # Fetch user details
         locs = User.get_locs(uname)
         if locs is None:
             return jsonify(None)
@@ -28,3 +38,21 @@ def get_user_nodes(uname):
         return jsonify(None)
 
     if request.method == 'POST':
+        # Create a new user
+        json_data = request.get_json(silent=True)
+        if json_data is None:
+            print("No Json")
+            abort(404)
+        try:
+            new_user = User(**json_data)
+        except Exception as e:
+            print(e)
+            return jsonify("'status': 'ERROR', 'reason': '{}'".format(e))
+        try:
+            new_user.save()
+        except Exception as e:
+            print(e)
+            return jsonify("'status': 'ERROR', 'reason': '{}'".format(e))
+
+
+        return jsonify("'status': 'OK', 'reason': 'Successful'")
