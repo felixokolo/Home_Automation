@@ -23,6 +23,7 @@ class Storage:
 
 	__Session = sessionmaker(bind=__engine)
 	__session = __Session()
+	psession = __Session()
 	__classes = ['Node', 'Schedule', 'Location', 'User', 'Channel']
 
 	def __init__(self):
@@ -47,8 +48,12 @@ class Storage:
 		"""
 		Executes pending transactions
 		"""
-		Base.metadata.create_all(self.__engine)
-		self.__session.commit()
+		try:
+			Base.metadata.create_all(self.__engine)
+			self.__session.commit()
+		except Exception as e:
+			print(e)
+			raise Exception(e)
 
 	def get(self, cls, id):
 		"""
