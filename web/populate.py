@@ -8,9 +8,11 @@ from web.models import storage
 
 storage.delete_all()
 #create users user_1 - user_10
+mapping = ['One', 'Two', 'Three', 'Four', 'Five',
+           'Six', 'Seven', 'Eight', 'Nine', 'Ten']
 users = []
 for n in range(10):
-    exec("user{} = User('user_{}')".format(n+1,n+1))
+    exec("user{} = User('user_{}', 'User {}')".format(n+1,n+1, mapping[n]))
     users.append(eval("user{}".format(n+1)))
 
 storage.save()
@@ -19,8 +21,8 @@ storage.save()
 locs = []
 for user in users:
     for n in range(10):
-        exec("locs_{}_{} = Location('{}_Room_{}', user.id)".format(user.name, n+1, user.name, n+1))
-        locs.append(eval("locs_{}_{}".format(user.name, n+1)))
+        exec("locs_{}_{} = Location('{}_Room_{}', user.id)".format(user.username, n+1, user.username, n+1))
+        locs.append(eval("locs_{}_{}".format(user.username, n+1)))
 storage.save()
 
 #Create 3 nodes for each location

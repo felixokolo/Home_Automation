@@ -66,6 +66,6 @@ class User(BaseModel, Base):
         if users is None:
             return None
         for user in users:
-            if user.name == uname:
+            if user.username == uname:
                 ret = [loc for loc in locs if loc.user_id == user.id]
                 return ret
