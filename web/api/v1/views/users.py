@@ -33,8 +33,11 @@ def get_user_nodes(uname):
             loc_node = Location.get_nodes(loc.id)
             if loc_node is not None:
                 nodes += loc_node
-        if nodes is not None:
-            return jsonify([node.to_dict() for node in nodes])
+        channels = []
+        for node in nodes:
+            channels.append({node.name: [ch.to_dict() for ch in node.get_channels()]})
+        if channels is not None:
+            return jsonify([channel for channel in channels])
         return jsonify(None)
 
     if request.method == 'POST':

@@ -33,4 +33,13 @@ for loc in locs:
         nodes.append(eval("nodes_{}_{}".format(loc.name, n+1)))
 storage.save()
 
+channels = []
+for node in nodes:
+    for n in range(3):
+        exec("channels_{}_{} = Channel('Channel{}_00{}', node.id, '{}_channel_00{}')".
+            format(node.name, n+1, node.name, n+1, node.name, n+1))
+        ch = eval("channels_{}_{}".format(node.name, n+1))
+        node.add_channels(ch)
+
+storage.save()
 # Create 5 channels for each node
