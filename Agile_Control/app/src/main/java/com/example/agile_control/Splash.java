@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.security.NetworkSecurityPolicy;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
@@ -12,6 +13,7 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import java.io.IOException;
@@ -26,6 +28,7 @@ public class Splash extends AppCompatActivity {
     @SuppressWarnings("DEPRECATION")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String resp = "";
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             final WindowInsetsController insetsController = getWindow().getInsetsController();
@@ -39,37 +42,27 @@ public class Splash extends AppCompatActivity {
             );
         }
         setContentView(R.layout.activity_splash);
-        new ConnectionSetup().execute();
-
+        new ConnectionSetup().execute("user_1");
 
     }
 
-    public class ConnectionSetup extends AsyncTask<Void, Void, Void> {
+    public class ConnectionSetup extends AsyncTask<String, String, String> {
 
-        String url = "http://192.168.43.72:5000/api/v1/agile/user_1";
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(url).build();
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected String doInBackground(String... params) {
+
 
             try {
-                Response response = client.newCall(request).execute();
-                System.out.println(response.body().string());
-                builder = new AlertDialog.Builder();
                 TimeUnit.SECONDS.sleep(3);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            catch (IOException e){
-                e.printStackTrace();
-            }
-
-            return null;
+            return "";
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(String res) {
+            super.onPostExecute(res);
             startActivity(new Intent(Splash.this, MainActivity.class));
             finish();
         }
